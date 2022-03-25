@@ -3,6 +3,7 @@ import generate from "@babel/generator";
 import t from "@babel/types";
 import path from "path";
 import { fileURLToPath } from "url";
+import cleanupWindowsPath from "./cleanup-windows-path.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -24,9 +25,11 @@ const getStoryImports = (entryData) => {
     entryData[entry].stories.forEach(({ componentName, namedExport }) => {
       const ast = lazyImport({
         source: t.stringLiteral(
-          path.relative(
-            path.join(__dirname, "../../../app/src"),
-            path.join(process.cwd(), entry),
+          cleanupWindowsPath(
+            path.relative(
+              path.join(__dirname, "../../../app/src"),
+              path.join(process.cwd(), entry),
+            ),
           ),
         ),
         component: t.identifier(componentName),

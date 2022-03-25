@@ -4,6 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import debugFactory from "debug";
 import getAst from "../get-ast.js";
+import cleanupWindowsPath from "./cleanup-windows-path.js";
 
 const debug = debugFactory("ladle:vite");
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -42,7 +43,8 @@ const getComponents = (configFolder) => {
     path.join(configFolder, "components.js"),
   ];
   const firstFoundComponentsPath = componentsPaths.find((componentsPath) =>
-    fs.existsSync(componentsPath));
+    fs.existsSync(componentsPath),
+  );
 
   if (!firstFoundComponentsPath) {
     debug(`Returning default no-op Provider.`);
@@ -54,9 +56,11 @@ const getComponents = (configFolder) => {
 
   firstFoundComponentsPath && debug(`${configFolder}/${filename} found.`);
 
-  const componentsRelativePath = path.relative(
-    path.join(__dirname, "../../../app/src"),
-    path.join(configFolder, filename),
+  const componentsRelativePath = cleanupWindowsPath(
+    path.relative(
+      path.join(__dirname, "../../../app/src"),
+      path.join(configFolder, filename),
+    ),
   );
   if (checkIfNamedExportExists("Provider", sourceCode, filename)) {
     debug(`Custom provider found.`);
