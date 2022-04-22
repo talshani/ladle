@@ -8,13 +8,13 @@
     "serve-prod": "http-server build -c-1 -s -p 61000",
     "build": "lerna run build --scope '@ladle/react' && node ../../packages/ladle/cjs/lib/cli/cli.js build",
     "lint": "echo 'no lint'",
-    "test-dev": "start-server-and-test serve 61000 'npx cross-env PW_EXPERIMENTAL_TS_ESM=1 playwright test'",
-    "test-prod": "start-server-and-test serve-prod 61000 'npx cross-env PW_EXPERIMENTAL_TS_ESM=1 playwright test'",
+    "test-dev": "start-server-and-test serve 61000 'playwright test'",
+    "test-prod": "start-server-and-test serve-prod 61000 'playwright test'",
     "test": "yarn test-prod && yarn test-dev"
   },
   "dependencies": {
     "@ladle/react": "^0.12.2",
-    "@playwright/test": "1.20.0",
+    "@playwright/test": "1.21.1",
     "http-server": "^14.1.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
